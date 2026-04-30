@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# Virtual environments
+env/
+venv/
+ENV/
+myenv/
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test and coverage
+.coverage
+.tox/
+.pytest_cache/
+
+# FastAPI build artifacts
+*.log
+
+# Ignore all site-packages (if present in repo)
+site-packages/
+
+# Ignore all dist-info and egg-info
+*.dist-info/
+*.egg-info/
+
+dist/
+build/
+
+# Ignore notebooks
+*.ipynb_checkpoints/
+
+# Ignore local config
+*.env
+.env.*
+
+# Ignore JSON data files
+*.json
+
+# Ignore any other temp files
+*.tmp
+*.bak
+*.swp
