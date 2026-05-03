@@ -1,5 +1,15 @@
-from pydantic import BaseModel, Field, EmailStr, AnyUrl, ValidationError ,field_validator , model_validator , computed_field
-from typing import List, Optional , Literal
+from pydantic import (
+    BaseModel,
+    Field,
+    EmailStr,
+    AnyUrl,
+    ValidationError,
+    field_validator,
+    model_validator,
+    computed_field,
+)
+from typing import List, Optional, Literal
+
 
 class Employee(BaseModel):
     empId: int = Field(gt=0, lt=100)
@@ -9,39 +19,49 @@ class Employee(BaseModel):
     empAge: int
     empSkills: List[str]
     empMarried: Optional[bool] = None
-    empRole:Literal['Frontend Dev', 'Backend Dev']
-    empTotalLeave: float 
+    empRole: Literal["Frontend Dev", "Backend Dev"]
+    empTotalLeave: float
     empAppliedLeave: int
 
-    @field_validator('empAge' , mode='before')
+    @field_validator("empAge", mode="before")
     @classmethod
     def validate_emp_age(cls, value):
         if value < 18 or value > 65:
             raise ValueError("empAge must be between 18 and 65")
         return value
-    
-    @field_validator('empEmail' , mode='after')
+
+    @field_validator("empEmail", mode="after")
     @classmethod
     def validate_emp_email(cls, value):
-        validDomain = ['oracle.com', 'ibm.com']
-        domainName = value.split('@')[-1]
+        validDomain = ["oracle.com", "ibm.com"]
+        domainName = value.split("@")[-1]
         if domainName not in validDomain:
-            raise ValueError("empEmail domain must be one of the following: oracle.com, ibm.com")
+            raise ValueError(
+                "empEmail domain must be one of the following: oracle.com, ibm.com"
+            )
         return value
-    
-    @model_validator(mode='after')
+
+    @model_validator(mode="after")
     def validate_emp_skills(model):
-        frontendSkill = {'React', 'Angular'}
-        backendSkill = {'Python', 'FastAPI'}
+        frontendSkill = {"React", "Angular"}
+        backendSkill = {"Python", "FastAPI"}
 
-        if model.empRole == 'Frontend Dev' and not frontendSkill.intersection(model.empSkills):
-            raise ValueError("Frontend Dev must include at least one of: React, Angular")
+        if model.empRole == "Frontend Dev" and not frontendSkill.intersection(
+            model.empSkills
+        ):
+            raise ValueError(
+                "Frontend Dev must include at least one of: React, Angular"
+            )
 
-        if model.empRole == 'Backend Dev' and not backendSkill.intersection(model.empSkills):
-            raise ValueError("Backend Dev must include at least one of: Python, FastAPI")
+        if model.empRole == "Backend Dev" and not backendSkill.intersection(
+            model.empSkills
+        ):
+            raise ValueError(
+                "Backend Dev must include at least one of: Python, FastAPI"
+            )
 
         return model
-    
+
     @computed_field
     @property
     def empLeaveBalance(self) -> float:
@@ -85,7 +105,7 @@ try:
         empMarried=False,
         empRole="Backend Dev",
         empTotalLeave=20,
-        empAppliedLeave=5
+        empAppliedLeave=5,
     )
     print(createEmpProfile(emp))
 except ValidationError as error:
@@ -101,11 +121,8 @@ try:
         empName="Ravi",
         empEmail="ravi@ibm.com",
         empAddress=EmpAddress(
-            street="MG Road",
-            city="Bengaluru",
-            state="Karnataka",
-            pincode="560001"
-        )
+            street="MG Road", city="Bengaluru", state="Karnataka", pincode="560001"
+        ),
     )
     print(createEmpAddressProfile(empWithAddress))
 except ValidationError as error:
